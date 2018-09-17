@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 489550}
   - component: {fileID: 3399076}
   - component: {fileID: 2302494}
-  - component: {fileID: 114670346794369208}
+  - component: {fileID: 114442777741625958}
   m_Layer: 0
   m_Name: Gas_Planet_A
   m_TagString: Untagged
@@ -84,7 +84,7 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 188694}
   m_IsPrefabAsset: 1
---- !u!114 &114670346794369208
+--- !u!114 &114442777741625958
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}

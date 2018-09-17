@@ -21,13 +21,13 @@ GameObject:
   - component: {fileID: 4466922687808358}
   - component: {fileID: 33550809005343020}
   - component: {fileID: 23015420930479412}
-  - component: {fileID: 54500284397395660}
-  - component: {fileID: 136504933586733530}
-  - component: {fileID: 114597188990083680}
-  - component: {fileID: 95358301184203150}
+  - component: {fileID: 54163201925405050}
+  - component: {fileID: 136434138398891512}
+  - component: {fileID: 114584007804083570}
+  - component: {fileID: 95071260402387956}
   m_Layer: 0
   m_Name: StarSparrow6
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,7 +87,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1838218614546268}
   m_Mesh: {fileID: 4300010, guid: add769d179a9826498fc063c005d35bd, type: 3}
---- !u!54 &54500284397395660
+--- !u!54 &54163201925405050
 Rigidbody:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,7 +102,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!95 &95358301184203150
+--- !u!95 &95071260402387956
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
@@ -120,7 +120,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114597188990083680
+--- !u!114 &114584007804083570
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,8 +133,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
   cam: {fileID: 0}
-  speed: 10
---- !u!136 &136504933586733530
+  speed: 4
+--- !u!136 &136434138398891512
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +143,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.88
-  m_Height: 4.27
+  m_Radius: 0.75
+  m_Height: 3.6
   m_Direction: 2
   m_Center: {x: 0.0000012516975, y: -0.10926932, z: 0.14846778}

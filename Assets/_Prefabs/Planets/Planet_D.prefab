@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 484052}
   - component: {fileID: 3399048}
   - component: {fileID: 2303782}
-  - component: {fileID: 114619598318452624}
+  - component: {fileID: 114748379230698358}
   m_Layer: 0
   m_Name: Planet_D
   m_TagString: Untagged
@@ -84,7 +84,7 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 150180}
   m_IsPrefabAsset: 1
---- !u!114 &114619598318452624
+--- !u!114 &114748379230698358
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}

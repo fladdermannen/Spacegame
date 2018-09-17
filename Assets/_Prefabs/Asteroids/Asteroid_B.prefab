@@ -10,8 +10,7 @@ GameObject:
   - component: {fileID: 449400}
   - component: {fileID: 3339702}
   - component: {fileID: 2310886}
-  - component: {fileID: 136274271052793210}
-  - component: {fileID: 114491735305723326}
+  - component: {fileID: 114444402107269764}
   m_Layer: 0
   m_Name: Asteroid_B
   m_TagString: Untagged
@@ -26,7 +25,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 190680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 100}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
@@ -85,7 +84,7 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 190680}
   m_IsPrefabAsset: 1
---- !u!114 &114491735305723326
+--- !u!114 &114444402107269764
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,16 +96,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
---- !u!136 &136274271052793210
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 190680}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.0066472813
-  m_Height: 0.016526027
-  m_Direction: 1
-  m_Center: {x: -0.0005145448, y: 0.0011258097, z: 0.0001998865}
