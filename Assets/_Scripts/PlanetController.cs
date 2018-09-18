@@ -17,7 +17,6 @@ public class PlanetController : MonoBehaviour {
         movement.Set(0, 0, -1);
         movement = movement.normalized * speed * Time.deltaTime;
 
-
     }
 	
 	// Update is called once per frame

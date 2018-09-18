@@ -27,5 +27,6 @@ public class AsteroidController : MonoBehaviour {
         gameManager.AsteroidRemoved(gameObject);
     }
 
+
     
 }

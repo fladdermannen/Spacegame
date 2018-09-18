@@ -1186,6 +1186,10 @@ Prefab:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: d7da3d4497ffc476381f2b6224f02b55, type: 3}
+    - target: {fileID: 1845975532164182, guid: b0d4144316105ae4f9a438900c9b3dc9, type: 2}
+      propertyPath: m_TagString
+      value: SfxClick
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0d4144316105ae4f9a438900c9b3dc9, type: 2}
   m_IsPrefabAsset: 0

@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public GameObject player;
     public GameObject jet;
+    public float asteroidSpawnDelay = 0.6f;
+    public int asteroidAmount = 4;
 
     private List<GameObject> asteroids = new List<GameObject>();
     private List<GameObject> planets = new List<GameObject>();
@@ -19,13 +21,14 @@ public class GameManager : MonoBehaviour {
 
     private bool stopSpawning = false;
 
-
+    
 
     // Use this for initialization
     void Start() {
         LoadPlayer();
+        stopSpawning = false;
 
-        SpawnAsteroid();
+        StartCoroutine(SpawnAsteroids(asteroidAmount));
         SpawnPlanet();
         SpawnRing();
 	}
@@ -35,18 +38,23 @@ public class GameManager : MonoBehaviour {
        
     }
 
-    void SpawnAsteroid()
+    IEnumerator SpawnAsteroids(int amount)
     {
-        int rn = Random.Range(0,asteroidPrefabs.Count);
-        GameObject newAsteroid = Instantiate(asteroidPrefabs[rn]);
-        newAsteroid.GetComponent<AsteroidController>().gameManager = this;
+        for (int i = 0; i < amount; i++)
+        {
+            int rn = Random.Range(0, asteroidPrefabs.Count);
+            GameObject newAsteroid = Instantiate(asteroidPrefabs[rn]);
+            newAsteroid.GetComponent<AsteroidController>().gameManager = this;
 
-        //Random vector for new asteroid
-        int randomX = Random.Range(-12, 14);
-        int randomY = Random.Range(-4, 6);
-        newAsteroid.transform.position = new Vector3(randomX, randomY, 100);
-        asteroids.Add(newAsteroid);
+            //Random vector for new asteroid
+            int randomX = Random.Range(-12, 14);
+            int randomY = Random.Range(-4, 6);
+            newAsteroid.transform.position = new Vector3(randomX, randomY, 100);
+            asteroids.Add(newAsteroid);
+            yield return new WaitForSeconds(asteroidSpawnDelay);
+        }
     }
+
 
     void SpawnPlanet()
     {
@@ -100,7 +108,7 @@ public class GameManager : MonoBehaviour {
     {
         asteroids.Remove(asteroid);
         if(!stopSpawning)
-            SpawnAsteroid();
+            StartCoroutine(SpawnAsteroids(1));
     }
     public void PlanetRemoved(GameObject planet)
     {
@@ -120,10 +128,15 @@ public class GameManager : MonoBehaviour {
         stopSpawning = true;
     }
 
+    public void StopSpawning()
+    {
+        stopSpawning = true;
+    }
+
     private void LoadPlayer()
     {
         //Load selected vehicle
-        player = Instantiate(vehiclePrefabs[VehicleSelection.index]);
+        player = Instantiate(vehiclePrefabs[mSettings.shipIndex]);
         player.GetComponent<PlayerController>().gameManager = this;
         player.GetComponent<PlayerController>().cam = cam;
 
@@ -136,5 +149,7 @@ public class GameManager : MonoBehaviour {
         animator.runtimeAnimatorController = Resources.Load("animator_controller") as RuntimeAnimatorController;
 
     }
+
+
 
 }

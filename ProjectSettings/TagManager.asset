@@ -7,6 +7,9 @@ TagManager:
   - Ring
   - BackgroundMusic
   - Sfx
+  - SfxSwipe
+  - SfxSelect
+  - SfxClick
   layers:
   - Default
   - TransparentFX

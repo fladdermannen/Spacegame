@@ -18,14 +18,14 @@ public class BackgroundSoundManager : MonoBehaviour {
         DontDestroyOnLoad(this);
 
         audioSource = GetComponent<AudioSource>();
-        audioSource.volume = Settings.musicVolume;
+        audioSource.volume = mSettings.musicVolume;
     }
 
 
     public void MusicVolume(float f)
     {
         audioSource.volume = f;
-        Settings.musicVolume = f;
+        mSettings.musicVolume = f;
     }
 
 }

@@ -133,7 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
   cam: {fileID: 0}
-  speed: 4
+  speed: 7
 --- !u!136 &136241076536967772
 CapsuleCollider:
   m_ObjectHideFlags: 1

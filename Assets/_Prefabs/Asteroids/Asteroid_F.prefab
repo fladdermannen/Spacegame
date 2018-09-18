@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3339702}
   - component: {fileID: 2310886}
   - component: {fileID: 114272645233533752}
+  - component: {fileID: 136885312329359540}
   m_Layer: 0
   m_Name: Asteroid_F
   m_TagString: Untagged
@@ -96,3 +97,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
+--- !u!136 &136885312329359540
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 190680}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.0066472813
+  m_Height: 0.016526027
+  m_Direction: 1
+  m_Center: {x: -0.0005145448, y: 0.0011258097, z: 0.0001998865}

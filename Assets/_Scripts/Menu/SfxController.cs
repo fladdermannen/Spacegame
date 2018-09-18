@@ -6,11 +6,20 @@ public class SfxController : MonoBehaviour {
 
     private void Awake()
     {
-        GameObject[] obj = GameObject.FindGameObjectsWithTag("Sfx");
-        if (obj.Length > 2)
+        GameObject[] click = GameObject.FindGameObjectsWithTag("SfxClick");
+        if (click.Length > 1)
         {
-            Destroy(obj[0]);
-            Destroy(obj[1]);
+            Destroy(click[0]);
+        }
+        GameObject[] swipe = GameObject.FindGameObjectsWithTag("SfxSwipe");
+        if (swipe.Length > 1)
+        {
+            Destroy(swipe[0]);
+        }
+        GameObject[] select = GameObject.FindGameObjectsWithTag("SfxSelect");
+        if (select.Length > 1)
+        {
+            Destroy(select[0]);
         }
 
         DontDestroyOnLoad(this);

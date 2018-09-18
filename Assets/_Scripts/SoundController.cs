@@ -12,10 +12,10 @@ public class SoundController : MonoBehaviour {
     {
         backgroundSound = GameObject.FindGameObjectWithTag("BackgroundMusic");
 
-        masterSlider.value = Settings.masterVolume;
-        musicSlider.value = Settings.musicVolume;
-        sfxSlider.value = Settings.sfxVolume;
-        AudioListener.volume = Settings.masterVolume;
+        masterSlider.value = mSettings.masterVolume;
+        musicSlider.value = mSettings.musicVolume;
+        sfxSlider.value = mSettings.sfxVolume;
+        AudioListener.volume = mSettings.masterVolume;
         
         masterSlider.onValueChanged.AddListener(delegate { MasterVolume(); });
         musicSlider.onValueChanged.AddListener(delegate { MusicVolume(); });
@@ -26,7 +26,7 @@ public class SoundController : MonoBehaviour {
     {
         float vol = masterSlider.value;
         AudioListener.volume = vol;
-        Settings.masterVolume = vol;
+        mSettings.masterVolume = vol;
     }
 
     void MusicVolume()

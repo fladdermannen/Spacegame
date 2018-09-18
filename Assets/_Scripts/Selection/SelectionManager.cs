@@ -92,7 +92,7 @@ public class SelectionManager : MonoBehaviour {
 
     public void OnVehicleSelected()
     {
-        VehicleSelection.index = selection;
+        mSettings.shipIndex = selection;
         directionChosen = false;
     }
 
