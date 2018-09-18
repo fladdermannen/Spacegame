@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class PlayerController : MonoBehaviour {
 
     Rigidbody playerRigidbody;
 
+    private bool DontMove = false;
 
 	// Use this for initialization
 	void Start () {
@@ -25,7 +27,12 @@ public class PlayerController : MonoBehaviour {
 #if UNITY_EDITOR
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
-        Move(h,v);
+
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            Move(h, v);
+        }
+        //Move(h,v);
 #endif
 
 
@@ -33,12 +40,28 @@ public class PlayerController : MonoBehaviour {
         {
             Touch myTouch = Input.GetTouch(0);
 
-            if(myTouch.phase == TouchPhase.Stationary || myTouch.phase == TouchPhase.Moved)
+            //Check if clicking the exit button to ignore player inputs
+            if (myTouch.phase == TouchPhase.Began)
             {
-                Vector3 touchPos = cam.ScreenToWorldPoint(new Vector3(myTouch.position.x, myTouch.position.y, 10f));
-                transform.position = Vector3.Lerp(transform.position, touchPos, speed * Time.deltaTime);
+                if (EventSystem.current.IsPointerOverGameObject(myTouch.fingerId))
+                {
+                    DontMove = true;
+                }
             }
 
+            else if (myTouch.phase == TouchPhase.Stationary || myTouch.phase == TouchPhase.Moved)
+            {
+                if (!DontMove)
+                {
+                    Vector3 touchPos = cam.ScreenToWorldPoint(new Vector3(myTouch.position.x, myTouch.position.y, 10f));
+                    transform.position = Vector3.Lerp(transform.position, touchPos, speed * Time.deltaTime);
+                }
+            }
+
+            if (myTouch.phase == TouchPhase.Ended)
+            {
+                DontMove = false;
+            }
             
         }
     }

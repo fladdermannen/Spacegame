@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour {
     public void CollisionDetected()
     {
         Die();
+        Handheld.Vibrate();
     }
 
     private void Die()
@@ -125,7 +126,7 @@ public class GameManager : MonoBehaviour {
 
     private void OnApplicationQuit()
     {
-        stopSpawning = true;
+        StopSpawning();
     }
 
     public void StopSpawning()
