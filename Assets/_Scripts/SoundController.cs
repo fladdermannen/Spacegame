@@ -7,6 +7,10 @@ public class SoundController : MonoBehaviour {
 
     public Slider masterSlider, musicSlider, sfxSlider;
     public GameObject backgroundSound;
+    public GameObject explosionSound;
+    public GameObject clickSound;
+    public GameObject swipeSound;
+
     
     private void Start()
     {
@@ -16,7 +20,10 @@ public class SoundController : MonoBehaviour {
         musicSlider.value = mSettings.musicVolume;
         sfxSlider.value = mSettings.sfxVolume;
         AudioListener.volume = mSettings.masterVolume;
-        
+        explosionSound.GetComponent<AudioSource>().volume = mSettings.sfxVolume;
+        clickSound.GetComponent<AudioSource>().volume = mSettings.sfxVolume;
+        swipeSound.GetComponent<AudioSource>().volume = mSettings.sfxVolume;
+
         masterSlider.onValueChanged.AddListener(delegate { MasterVolume(); });
         musicSlider.onValueChanged.AddListener(delegate { MusicVolume(); });
         sfxSlider.onValueChanged.AddListener(delegate { SfxVolume(); });
@@ -37,6 +44,12 @@ public class SoundController : MonoBehaviour {
 
     void SfxVolume()
     {
+        float vol = sfxSlider.value;
+        mSettings.sfxVolume = vol;
+        explosionSound.GetComponent<AudioSource>().volume = vol;
+        clickSound.GetComponent<AudioSource>().volume = vol;
+        swipeSound.GetComponent<AudioSource>().volume = vol;
+
 
     }
 

@@ -8,11 +8,15 @@ public class GameManager : MonoBehaviour {
     public List<GameObject> planetPrefabs = new List<GameObject>();
     public List<GameObject> vehiclePrefabs = new List<GameObject>();
     public GameObject ringPrefab;
+    public GameObject explosionPrefab;
+    public GameObject energyExplosionPrefab;
     public Camera cam;
     [HideInInspector]
     public GameObject player;
     public GameObject jet;
-    public float asteroidSpawnDelay = 0.6f;
+    public GameObject shooter;
+
+    public float asteroidSpawnDelay = 0.8f;
     public int asteroidAmount = 4;
 
     private List<GameObject> asteroids = new List<GameObject>();
@@ -35,7 +39,7 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-       
+
     }
 
     IEnumerator SpawnAsteroids(int amount)
@@ -94,13 +98,28 @@ public class GameManager : MonoBehaviour {
     }
     
     
-    public void CollisionDetected()
+    public void PlayerCollisionDetected()
     {
-        Die();
         Handheld.Vibrate();
+        GameObject playerExplosion = Instantiate(explosionPrefab);
+        playerExplosion.transform.position = player.transform.position;
+        ParticleSystem parts = playerExplosion.GetComponent<ParticleSystem>();
+        float duration = parts.main.duration;
+        Destroy(player);
+        Destroy(playerExplosion, duration);
     }
 
-    private void Die()
+    public void AsteroidKilled(GameObject deadAsteroid)
+    {
+        GameObject energyExplosion = Instantiate(energyExplosionPrefab);
+        energyExplosion.transform.position = deadAsteroid.transform.position;
+        ParticleSystem parts = energyExplosion.GetComponent<ParticleSystem>();
+        float duration = parts.main.duration;
+        Destroy(deadAsteroid);
+        Destroy(energyExplosion, duration);
+    }
+
+    private void GameOver()
     {
 
     }
@@ -144,6 +163,10 @@ public class GameManager : MonoBehaviour {
         //Attach jet to vehicle
         GameObject newJet = Instantiate(jet);
         newJet.transform.SetParent(player.transform);
+
+        //Attach IceLance to vehicle
+        GameObject newShooter = Instantiate(shooter);
+        newShooter.transform.SetParent(player.transform);
 
         //Load and attach animation
         Animator animator = player.GetComponent<Animator>();

@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SelectionManager : MonoBehaviour {
 
     public Camera cam;
     CameraController camController;
-    public AudioSource audioSwipe;
+    public GameObject swipeSoundPrefab;
+    public GameObject selectSound;
+    GameObject swipeSound;
     
     Vector2 startPos;
     Vector2 direction;
@@ -15,11 +18,15 @@ public class SelectionManager : MonoBehaviour {
 
     private int selection;
 
+    private bool MuteSwipeSound;
     
     // Use this for initialization
     void Start () {
+        MuteSwipeSound = false;
         camController = cam.GetComponent<CameraController>();
         selection = 0;
+        swipeSound = Instantiate(swipeSoundPrefab);
+        selectSound.GetComponent<AudioSource>().volume = mSettings.sfxVolume;
 	}
 
     
@@ -29,14 +36,14 @@ public class SelectionManager : MonoBehaviour {
 #if UNITY_EDITOR
         if (Input.GetKeyDown("d"))
         {
-            audioSwipe.Play();
+            swipeSound.GetComponent<AudioSource>().Play();
             camController.Swiped(1);
             selection++;
             if (selection > 7)
                 selection = 0;
         } else if (Input.GetKeyDown("a"))
         {
-            audioSwipe.Play();
+            swipeSound.GetComponent<AudioSource>().Play();
             camController.Swiped(-1);
             selection--;
             if (selection < 0)
@@ -46,12 +53,17 @@ public class SelectionManager : MonoBehaviour {
 
         if (Input.touchCount > 0)
         {
+            
             Touch myTouch = Input.GetTouch(0);
             switch (myTouch.phase)
             {
                 case TouchPhase.Began:
                     startPos = myTouch.position;
                     directionChosen = false;
+                    if (EventSystem.current.IsPointerOverGameObject(myTouch.fingerId))
+                    {
+                        MuteSwipeSound = true;
+                    }
                     break;
 
                 case TouchPhase.Moved:
@@ -66,7 +78,8 @@ public class SelectionManager : MonoBehaviour {
         }
         if (directionChosen)
         {
-            audioSwipe.Play();
+            if (!MuteSwipeSound)
+                swipeSound.GetComponent<AudioSource>().Play();
 
             if (direction.x < 0)
             {
@@ -85,6 +98,7 @@ public class SelectionManager : MonoBehaviour {
             }
             direction.Set(0, 0);
             startPos.Set(0, 0);
+
         }
 
 

@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         Debug.Log("Collision");
-        gameManager.CollisionDetected();
+        gameManager.PlayerCollisionDetected();
     }
 
     private void OnTriggerEnter(Collider col)

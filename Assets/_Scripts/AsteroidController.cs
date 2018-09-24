@@ -9,6 +9,7 @@ public class AsteroidController : MonoBehaviour {
     
     Vector3 movement;
     float speed = 50;
+    private int hitpoints = 3;
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +28,14 @@ public class AsteroidController : MonoBehaviour {
         gameManager.AsteroidRemoved(gameObject);
     }
 
+    private void OnParticleCollision(GameObject other)
+    {
+        hitpoints--;
+        if(hitpoints == 0)
+        {
+            gameManager.AsteroidKilled(gameObject);
+        }
+    }
 
-    
+
 }

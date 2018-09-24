@@ -308,6 +308,15 @@ MonoBehaviour:
   musicSlider: {fileID: 1694191502}
   sfxSlider: {fileID: 484941313}
   backgroundSound: {fileID: 1690140406}
+  explosionSound: {fileID: 1328831750462906, guid: 36d9456c98813ec4fb58b7351ec58bd7,
+    type: 2}
+  clickSound: {fileID: 229842655}
+  swipeSound: {fileID: 1840397509970842, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+--- !u!1 &229842655 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1845975532164182, guid: b0d4144316105ae4f9a438900c9b3dc9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1232563839}
 --- !u!114 &231860733 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 11400000, guid: b6a1cf4e3eeaf9a4ca38bf8acb910a6d,
