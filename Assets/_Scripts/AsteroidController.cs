@@ -11,8 +11,16 @@ public class AsteroidController : MonoBehaviour {
     float speed = 50;
     private int hitpoints = 3;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
+        int randomX = Random.Range(-12, 14);
+        int randomY = Random.Range(-4, 6);
+        transform.position = new Vector3(randomX, randomY, 150);
+    }
+
+    // Use this for initialization
+    void Start () {
+        
         movement.Set(0, 0, -1);
         movement = movement.normalized * speed * Time.deltaTime;
 	}

@@ -10,32 +10,40 @@ public class GameManager : MonoBehaviour {
     public GameObject ringPrefab;
     public GameObject explosionPrefab;
     public GameObject energyExplosionPrefab;
+    public GameObject enemyPrefab;
+    public GameObject popupTextPrefab;
+    public Canvas canvas;
     public Camera cam;
     [HideInInspector]
     public GameObject player;
     public GameObject jet;
     public GameObject shooter;
-
+    public GameObject scoreText;
     public float asteroidSpawnDelay = 0.8f;
     public int asteroidAmount = 4;
-
+    
     private List<GameObject> asteroids = new List<GameObject>();
     private List<GameObject> planets = new List<GameObject>();
     private List<GameObject> rings = new List<GameObject>();
 
     private bool stopSpawning = false;
+    private ScoreController scoreController;
 
+    private int asteroidPoints = 300;
+    private int enemyPoints = 5000;
     
 
     // Use this for initialization
     void Start() {
-        LoadPlayer();
         stopSpawning = false;
-
+        scoreController = scoreText.GetComponent<ScoreController>();
+        
         StartCoroutine(SpawnAsteroids(asteroidAmount));
         SpawnPlanet();
         SpawnRing();
-	}
+        LoadPlayer();
+        //SpawnEnemy();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -49,11 +57,6 @@ public class GameManager : MonoBehaviour {
             int rn = Random.Range(0, asteroidPrefabs.Count);
             GameObject newAsteroid = Instantiate(asteroidPrefabs[rn]);
             newAsteroid.GetComponent<AsteroidController>().gameManager = this;
-
-            //Random vector for new asteroid
-            int randomX = Random.Range(-12, 14);
-            int randomY = Random.Range(-4, 6);
-            newAsteroid.transform.position = new Vector3(randomX, randomY, 100);
             asteroids.Add(newAsteroid);
             yield return new WaitForSeconds(asteroidSpawnDelay);
         }
@@ -65,39 +68,24 @@ public class GameManager : MonoBehaviour {
         int rn = Random.Range(0, planetPrefabs.Count);
         GameObject newPlanet = Instantiate(planetPrefabs[rn]);
         newPlanet.GetComponent<PlanetController>().gameManager = this;
-
-        //Random vector for new planet
-        int pos = Random.Range(0, 2);
-        int randomX = 1;
-        int randomY = 1;
-        if (pos == 1)
-        {
-            randomX = Random.Range(15, 100);
-            randomY = Random.Range(-10, 30);
-        }
-        else if(pos == 0)
-        {
-            randomX = Random.Range(-15, -90);
-            randomY = Random.Range(-10, 30);
-        }
-        newPlanet.transform.position = new Vector3(randomX, randomY, 400);
         planets.Add(newPlanet);
         
     }
 
     void SpawnRing()
     {
-        int randomX = Random.Range(-11, 13);
-        int randomY = Random.Range(-3, 6);
-
         GameObject newRing = Instantiate(ringPrefab);
         newRing.GetComponent<RingController>().gameManager = this;
-
-        newRing.transform.position = new Vector3(randomX, randomY, 100);
         rings.Add(newRing);
     }
     
-    
+    public void SpawnEnemy()
+    {
+        GameObject enemy = Instantiate(enemyPrefab);
+        enemy.GetComponent<EnemyController>().gameManager = this;
+
+    }
+
     public void PlayerCollisionDetected()
     {
         Handheld.Vibrate();
@@ -107,21 +95,41 @@ public class GameManager : MonoBehaviour {
         float duration = parts.main.duration;
         Destroy(player);
         Destroy(playerExplosion, duration);
+
+        GameOver();
     }
 
     public void AsteroidKilled(GameObject deadAsteroid)
     {
+        CreatePopupText("" + asteroidPoints, deadAsteroid.transform);
         GameObject energyExplosion = Instantiate(energyExplosionPrefab);
         energyExplosion.transform.position = deadAsteroid.transform.position;
         ParticleSystem parts = energyExplosion.GetComponent<ParticleSystem>();
         float duration = parts.main.duration;
         Destroy(deadAsteroid);
         Destroy(energyExplosion, duration);
+
+        //Add points
+        scoreController.AddPoints(asteroidPoints);
+    }
+
+    public void EnemyKilled(GameObject deadEnemy)
+    {
+        CreatePopupText("" + enemyPoints, deadEnemy.transform);
+        GameObject explosion = Instantiate(explosionPrefab);
+        explosion.transform.position = deadEnemy.transform.position;
+        ParticleSystem parts = explosion.GetComponent<ParticleSystem>();
+        float duration = parts.main.duration;
+        Destroy(deadEnemy);
+        Destroy(explosion, duration);
+
+        //Add points
+        scoreController.AddPoints(enemyPoints);
     }
 
     private void GameOver()
     {
-
+        scoreController.StopScore();
     }
     
     public void AsteroidRemoved(GameObject asteroid)
@@ -132,9 +140,13 @@ public class GameManager : MonoBehaviour {
     }
     public void PlanetRemoved(GameObject planet)
     {
-        planets.Remove(planet);
-        if(!stopSpawning)
+        //planets.Remove(planet);
+        if (!stopSpawning)
+        {
             SpawnPlanet();
+            if (planets.Count % 3 == 0)
+                SpawnEnemy();
+        }
     }
     public void RingRemoved(GameObject ring)
     {
@@ -174,6 +186,15 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    private void CreatePopupText(string text, Transform location)
+    {
+        GameObject popup = Instantiate(popupTextPrefab);
+        popup.transform.SetParent(canvas.transform, false);
+        popup.GetComponent<PopupController>().SetText(text);
 
+        Vector3 screenPosition = cam.WorldToScreenPoint(location.position);
+        screenPosition += new Vector3(0, 12, 0);
+        popup.transform.position = screenPosition;
+    }
 
 }

@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 
     public GameManager gameManager;
     public Camera cam;
-    public float speed = 2f;
+    private float speed = 7f;
 
     Vector3 movement;
 
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Ring collided");
         }
 
-        Debug.Log("Collision");
+        Debug.Log("Collision with " + collision.gameObject.name);
         gameManager.PlayerCollisionDetected();
     }
 
