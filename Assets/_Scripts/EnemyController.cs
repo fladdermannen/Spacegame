@@ -34,7 +34,7 @@ public class EnemyController : MonoBehaviour {
                 targetPosition = new Vector3(0, 0, 20);
             firstPosition = false;
 
-            int rx = Random.Range(-9, 9);
+            int rx = Random.Range(-7, 7);
             int ry = Random.Range(-4, 4);
             targetPosition = new Vector3(rx, ry, 20);
 

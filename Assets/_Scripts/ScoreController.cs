@@ -8,7 +8,7 @@ public class ScoreController : MonoBehaviour {
     public GameManager gameManager;
 
     private int score;
-    private bool stopScore = false;
+    private bool stopScore = true;
 
     private void Start()
     {
@@ -39,5 +39,10 @@ public class ScoreController : MonoBehaviour {
     public void StopScore()
     {
         stopScore = true;
+    }
+
+    public void EnableScore()
+    {
+        stopScore = false;
     }
 }

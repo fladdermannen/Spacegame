@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour {
     public GameObject enemyPrefab;
     public GameObject popupTextPrefab;
     public GameObject respawnPrefab;
+    public GameObject sparksPrefab;
+    public GameObject smokePrefab;
+    public GameObject rocketPrefab;
     public Canvas canvas;
     public Camera cam;
     private GameObject player;
@@ -22,7 +25,7 @@ public class GameManager : MonoBehaviour {
     public float asteroidSpawnDelay = 0.8f;
     public int asteroidAmount = 4;
     
-    private List<GameObject> asteroids = new List<GameObject>();
+    public List<GameObject> asteroids = new List<GameObject>();
     private List<GameObject> planets = new List<GameObject>();
     private List<GameObject> rings = new List<GameObject>();
 
@@ -32,14 +35,15 @@ public class GameManager : MonoBehaviour {
     private int asteroidPoints = 300;
     private int enemyPoints = 5000;
     private int scoreFontSize = 16;
-    
+
+    private GameObject smoke;
+    private List<GameObject> rockets = new List<GameObject>();
 
     // Use this for initialization
     void Start() {
         stopSpawning = false;
         scoreController = scoreText.GetComponent<ScoreController>();
-        
-        
+
         StartCoroutine(LoadPlayer());
         StartCoroutine(LoadGameObjects());
         //SpawnEnemy();
@@ -47,7 +51,10 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+       if (Input.GetKeyDown("space"))
+        {
+            FireRockets();
+        }
     }
 
     IEnumerator SpawnAsteroids(int amount)
@@ -83,6 +90,27 @@ public class GameManager : MonoBehaviour {
         GameObject enemy = Instantiate(enemyPrefab);
         enemy.GetComponent<EnemyController>().gameManager = this;
 
+    }
+
+    public void PlayerHit()
+    {
+        GameObject sparks = Instantiate(sparksPrefab);
+        sparks.transform.SetParent(player.transform);
+        sparks.transform.position = player.transform.position;
+        ParticleSystem parts = sparks.GetComponent<ParticleSystem>();
+        Destroy(sparks, parts.main.duration);
+    }
+
+    public void PlayerLowHealth()
+    {
+        smoke = Instantiate(smokePrefab);
+        smoke.transform.position = player.transform.position;
+        smoke.transform.SetParent(player.transform);
+    }
+
+    public void PlayerHealed()
+    {
+        Destroy(smoke);
     }
 
     public void PlayerCollisionDetected()
@@ -144,7 +172,10 @@ public class GameManager : MonoBehaviour {
         {
             SpawnPlanet();
             if (planets.Count % 3 == 0)
+            {
                 SpawnEnemy();
+                StartCoroutine(SpawnAsteroids(2));
+            }
         }
     }
     public void RingRemoved(GameObject ring)
@@ -203,6 +234,9 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(SpawnAsteroids(asteroidAmount));
         SpawnPlanet();
         SpawnRing();
+        GameObject ps = GameObject.FindGameObjectWithTag("ParticleSystem");
+        ps.GetComponent<ParticleSystem>().Play();
+        scoreController.EnableScore();
     }
 
     public void CreatePopupText(string text, Transform location, int fontSize)
@@ -218,5 +252,28 @@ public class GameManager : MonoBehaviour {
         screenPosition += new Vector3(0, 12, 0);
         popup.transform.position = screenPosition;
     }
+
+    
+
+    public void FireRockets()
+    {
+        for (int i = 0; i < asteroids.Count; i++)
+        {
+            GameObject rocket = Instantiate(rocketPrefab);
+            rockets.Add(rocket);
+            Vector3 spawnPos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z+5);
+            rocket.transform.position = spawnPos;
+
+            RocketController rc = rocket.GetComponent<RocketController>();
+            rc.gameManager = this;
+            rc.PassTarget(asteroids[i]);
+
+            ParticleSystem parts = rocket.GetComponent<ParticleSystem>();
+            Destroy(rocket, parts.main.duration);
+
+        }
+    }
+
+    
 
 }

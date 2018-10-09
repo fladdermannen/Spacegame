@@ -43,6 +43,12 @@ public class AsteroidController : MonoBehaviour {
         {
             gameManager.AsteroidKilled(gameObject);
         }
+
+        if (other.tag == "Rocket")
+        {
+            Destroy(gameObject);
+            gameManager.AsteroidKilled(gameObject);
+        }
     }
 
 

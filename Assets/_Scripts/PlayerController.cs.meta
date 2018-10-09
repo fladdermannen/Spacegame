@@ -3,7 +3,11 @@ guid: 4b732c99b4dbbb046be0ae55c1caf673
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - gameManager: {instanceID: 0}
+  - cam: {instanceID: 0}
+  - sparksPrefab: {fileID: 1551635825864032, guid: e011b980758a8f34f99b9957e3db59e8,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

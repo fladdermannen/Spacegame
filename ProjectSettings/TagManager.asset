@@ -12,6 +12,10 @@ TagManager:
   - SfxClick
   - SfxExplosion
   - IceLance
+  - ParticleSystem
+  - EnemyIceLance
+  - Sparks
+  - Rocket
   layers:
   - Default
   - TransparentFX
