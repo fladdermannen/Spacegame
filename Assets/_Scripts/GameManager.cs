@@ -12,10 +12,10 @@ public class GameManager : MonoBehaviour {
     public GameObject energyExplosionPrefab;
     public GameObject enemyPrefab;
     public GameObject popupTextPrefab;
+    public GameObject respawnPrefab;
     public Canvas canvas;
     public Camera cam;
-    [HideInInspector]
-    public GameObject player;
+    private GameObject player;
     public GameObject jet;
     public GameObject shooter;
     public GameObject scoreText;
@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour {
 
     private int asteroidPoints = 300;
     private int enemyPoints = 5000;
+    private int scoreFontSize = 16;
     
 
     // Use this for initialization
@@ -38,10 +39,9 @@ public class GameManager : MonoBehaviour {
         stopSpawning = false;
         scoreController = scoreText.GetComponent<ScoreController>();
         
-        StartCoroutine(SpawnAsteroids(asteroidAmount));
-        SpawnPlanet();
-        SpawnRing();
-        LoadPlayer();
+        
+        StartCoroutine(LoadPlayer());
+        StartCoroutine(LoadGameObjects());
         //SpawnEnemy();
     }
 	
@@ -69,7 +69,6 @@ public class GameManager : MonoBehaviour {
         GameObject newPlanet = Instantiate(planetPrefabs[rn]);
         newPlanet.GetComponent<PlanetController>().gameManager = this;
         planets.Add(newPlanet);
-        
     }
 
     void SpawnRing()
@@ -101,7 +100,7 @@ public class GameManager : MonoBehaviour {
 
     public void AsteroidKilled(GameObject deadAsteroid)
     {
-        CreatePopupText("" + asteroidPoints, deadAsteroid.transform);
+        CreatePopupText("" + asteroidPoints, deadAsteroid.transform, scoreFontSize);
         GameObject energyExplosion = Instantiate(energyExplosionPrefab);
         energyExplosion.transform.position = deadAsteroid.transform.position;
         ParticleSystem parts = energyExplosion.GetComponent<ParticleSystem>();
@@ -115,7 +114,7 @@ public class GameManager : MonoBehaviour {
 
     public void EnemyKilled(GameObject deadEnemy)
     {
-        CreatePopupText("" + enemyPoints, deadEnemy.transform);
+        CreatePopupText("" + enemyPoints, deadEnemy.transform, scoreFontSize);
         GameObject explosion = Instantiate(explosionPrefab);
         explosion.transform.position = deadEnemy.transform.position;
         ParticleSystem parts = explosion.GetComponent<ParticleSystem>();
@@ -165,12 +164,25 @@ public class GameManager : MonoBehaviour {
         stopSpawning = true;
     }
 
-    private void LoadPlayer()
+
+    private IEnumerator LoadPlayer()
     {
+        GameObject respawn = Instantiate(respawnPrefab);
+        respawn.transform.position = Vector3.zero;
+
         //Load selected vehicle
         player = Instantiate(vehiclePrefabs[mSettings.shipIndex]);
-        player.GetComponent<PlayerController>().gameManager = this;
-        player.GetComponent<PlayerController>().cam = cam;
+        PlayerController pc = player.GetComponent<PlayerController>();
+        pc.enabled = false;
+        pc.gameManager = this;
+        pc.cam = cam;
+
+        //Load and attach animation
+        Animator animator = player.GetComponent<Animator>();
+        animator.runtimeAnimatorController = Resources.Load("animator_controller") as RuntimeAnimatorController;
+        animator.Play("Invincibility");
+
+        yield return new WaitForSeconds(2f);
 
         //Attach jet to vehicle
         GameObject newJet = Instantiate(jet);
@@ -180,17 +192,27 @@ public class GameManager : MonoBehaviour {
         GameObject newShooter = Instantiate(shooter);
         newShooter.transform.SetParent(player.transform);
 
-        //Load and attach animation
-        Animator animator = player.GetComponent<Animator>();
-        animator.runtimeAnimatorController = Resources.Load("animator_controller") as RuntimeAnimatorController;
-
+        animator.Play("ShipAnimation");
+        pc.enabled = true;
     }
 
-    private void CreatePopupText(string text, Transform location)
+    private IEnumerator LoadGameObjects()
+    {
+        yield return new WaitForSeconds(2f);
+        
+        StartCoroutine(SpawnAsteroids(asteroidAmount));
+        SpawnPlanet();
+        SpawnRing();
+    }
+
+    public void CreatePopupText(string text, Transform location, int fontSize)
     {
         GameObject popup = Instantiate(popupTextPrefab);
+        PopupController pop = popup.GetComponent<PopupController>();
+
         popup.transform.SetParent(canvas.transform, false);
-        popup.GetComponent<PopupController>().SetText(text);
+        pop.SetText(text);
+        pop.SetFontSize(fontSize);
 
         Vector3 screenPosition = cam.WorldToScreenPoint(location.position);
         screenPosition += new Vector3(0, 12, 0);

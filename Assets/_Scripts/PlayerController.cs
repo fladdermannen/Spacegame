@@ -7,19 +7,24 @@ public class PlayerController : MonoBehaviour {
 
     public GameManager gameManager;
     public Camera cam;
+
     private float speed = 7f;
+    private bool DontMove = false;
+    private WaitForSeconds immortalTime = new WaitForSeconds(7f);
+    private CapsuleCollider col;
+    private Animator ani;
 
     Vector3 movement;
-
     Rigidbody playerRigidbody;
 
-    private bool DontMove = false;
 
 	// Use this for initialization
 	void Start () {
         playerRigidbody = GetComponent<Rigidbody>();
-        
-	}
+        col = gameObject.GetComponent<CapsuleCollider>();
+        ani = gameObject.GetComponent<Animator>();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -28,7 +33,7 @@ public class PlayerController : MonoBehaviour {
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (!EventSystem.current.IsPointerOverGameObject() && !DontMove)
         {
             Move(h, v);
         }
@@ -95,7 +100,20 @@ public class PlayerController : MonoBehaviour {
         if(col.gameObject.tag == "Ring")
         {
             Debug.Log("Ring trigger enter");
+            StartCoroutine(Invincibility());
         }
+    }
+
+    private IEnumerator Invincibility()
+    {
+        gameManager.CreatePopupText("POWERUP", gameObject.transform, 20);
+        ani.Play("Invincibility");
+        col.enabled = false;
+
+        yield return immortalTime;
+
+        ani.Play("ShipAnimation");
+        col.enabled = true;
     }
 
 

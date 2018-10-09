@@ -19,4 +19,9 @@ public class PopupController : MonoBehaviour {
     {
         pointsText.text = text;
     }
+
+    public void SetFontSize(int s)
+    {
+        pointsText.fontSize = s;
+    }
 }
