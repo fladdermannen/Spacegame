@@ -50,7 +50,6 @@ public class SoundController : MonoBehaviour {
         clickSound.GetComponent<AudioSource>().volume = vol;
         swipeSound.GetComponent<AudioSource>().volume = vol;
 
-
     }
 
 }

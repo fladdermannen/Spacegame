@@ -361,6 +361,62 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &274008046
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4115080413590334, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4115080413590334, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4115080413590334, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4115080413590334, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4115080413590334, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4115080413590334, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4115080413590334, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4115080413590334, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1840397509970842, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+      propertyPath: m_Name
+      value: RingSfx
+      objectReference: {fileID: 0}
+    - target: {fileID: 82254436327148848, guid: d4de6abb78b2bec409b4585aef7342b0,
+        type: 2}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5a6ad48d02c634b579f315c04a42be00, type: 3}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d4de6abb78b2bec409b4585aef7342b0, type: 2}
+  m_IsPrefabAsset: 0
+--- !u!1 &274008047 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1840397509970842, guid: d4de6abb78b2bec409b4585aef7342b0,
+    type: 2}
+  m_PrefabInternal: {fileID: 274008046}
 --- !u!1001 &343696013
 Prefab:
   m_ObjectHideFlags: 0
@@ -1403,9 +1459,9 @@ MonoBehaviour:
   jet: {fileID: 1241760777275600, guid: fdd61ab4552df3745a7b78b6abd50d44, type: 2}
   shooter: {fileID: 1749487348716780, guid: 5fd85928a758bee45aadcbf9d1f03488, type: 2}
   scoreText: {fileID: 161563769}
+  ringSfx: {fileID: 274008047}
   asteroidSpawnDelay: 0.4
-  asteroidAmount: 1
-  asteroids: []
+  asteroidAmount: 4
 --- !u!4 &1374581479
 Transform:
   m_ObjectHideFlags: 0

@@ -105,7 +105,6 @@ public class PlayerController : MonoBehaviour {
     {
         if(col.gameObject.tag == "Ring")
         {
-            Debug.Log("Ring trigger enter");
             if(currentHitpoints==5)
                 StartCoroutine(Invincibility());
             else

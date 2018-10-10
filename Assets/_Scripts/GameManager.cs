@@ -22,10 +22,11 @@ public class GameManager : MonoBehaviour {
     public GameObject jet;
     public GameObject shooter;
     public GameObject scoreText;
+    public GameObject ringSfx;
     public float asteroidSpawnDelay = 0.8f;
     public int asteroidAmount = 4;
     
-    public List<GameObject> asteroids = new List<GameObject>();
+    private List<GameObject> asteroids = new List<GameObject>();
     private List<GameObject> planets = new List<GameObject>();
     private List<GameObject> rings = new List<GameObject>();
 
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour {
     void Start() {
         stopSpawning = false;
         scoreController = scoreText.GetComponent<ScoreController>();
+        ringSfx.GetComponent<AudioSource>().volume = mSettings.sfxVolume;
 
         StartCoroutine(LoadPlayer());
         StartCoroutine(LoadGameObjects());
@@ -253,10 +255,9 @@ public class GameManager : MonoBehaviour {
         popup.transform.position = screenPosition;
     }
 
-    
-
     public void FireRockets()
     {
+        ringSfx.GetComponent<AudioSource>().Play();
         for (int i = 0; i < asteroids.Count; i++)
         {
             GameObject rocket = Instantiate(rocketPrefab);
@@ -270,6 +271,7 @@ public class GameManager : MonoBehaviour {
 
             ParticleSystem parts = rocket.GetComponent<ParticleSystem>();
             Destroy(rocket, parts.main.duration);
+
 
         }
     }
