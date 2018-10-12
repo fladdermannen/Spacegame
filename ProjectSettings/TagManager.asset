@@ -16,6 +16,9 @@ TagManager:
   - EnemyIceLance
   - Sparks
   - Rocket
+  - hs1
+  - hs2
+  - hs3
   layers:
   - Default
   - TransparentFX

@@ -39,10 +39,45 @@ public class ScoreController : MonoBehaviour {
     public void StopScore()
     {
         stopScore = true;
+        SubmitNewHighscore(score);
     }
 
     public void EnableScore()
     {
         stopScore = false;
+    }
+
+    private void SaveHighscores()
+    {
+        PlayerPrefs.SetInt("highscore1", Highscores.highscore1);
+        PlayerPrefs.SetInt("highscore2", Highscores.highscore2);
+        PlayerPrefs.SetInt("highscore3", Highscores.highscore3);
+    }
+
+    public void SubmitNewHighscore(int newScore)
+    {
+        if (Highscores.highscore1 == 0)
+        {
+            Highscores.highscore1 = newScore;
+            SaveHighscores();
+        }
+        else if (newScore > Highscores.highscore1)
+        {
+            Highscores.highscore3 = Highscores.highscore2;
+            Highscores.highscore2 = Highscores.highscore1;
+            Highscores.highscore1 = newScore;
+            SaveHighscores();
+        }
+        else if (newScore > Highscores.highscore2 && newScore < Highscores.highscore1)
+        {
+            Highscores.highscore3 = Highscores.highscore2;
+            Highscores.highscore2 = newScore;
+            SaveHighscores();
+        }
+        else if (newScore > Highscores.highscore3 && newScore < Highscores.highscore2)
+        {
+            Highscores.highscore3 = newScore;
+            SaveHighscores();
+        }
     }
 }

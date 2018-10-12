@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
     public GameManager gameManager;
     public Camera cam;
 
-    private int maxHitpoints = 5;
+    private int maxHitpoints = 3;
     private int currentHitpoints;
     private float speed = 7f;
     private bool dontMove = false;
@@ -105,11 +105,15 @@ public class PlayerController : MonoBehaviour {
     {
         if(col.gameObject.tag == "Ring")
         {
-            if(currentHitpoints==5)
+            if (currentHitpoints == maxHitpoints)
+            {
                 StartCoroutine(Invincibility());
+                StartCoroutine(gameManager.PlayInvincibleSfx(immortalTime));
+            }
             else
             {
                 RestoreHitpoints();
+                gameManager.PlayHealedSfx();
             }
 
             gameManager.FireRockets();
@@ -147,7 +151,7 @@ public class PlayerController : MonoBehaviour {
             gameManager.PlayerHit();
             StartCoroutine(RecentlyHit());
 
-            if (currentHitpoints == 2)
+            if (currentHitpoints == 1)
             {
                 gameManager.PlayerLowHealth();
             }

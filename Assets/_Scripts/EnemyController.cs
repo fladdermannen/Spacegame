@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour {
     Vector3 targetPosition;
     private bool firstPosition = true;
     private float wait = 3f;
-    private int hitpoints = 20;
+    private int hitpoints = 10;
     
     private void Start()
     {

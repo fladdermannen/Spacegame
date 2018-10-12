@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -18,14 +19,20 @@ public class GameManager : MonoBehaviour {
     public GameObject rocketPrefab;
     public Canvas canvas;
     public Camera cam;
-    private GameObject player;
+    public GameObject gameOverPanel;
+    public GameObject exitButton;
     public GameObject jet;
     public GameObject shooter;
     public GameObject scoreText;
-    public GameObject ringSfx;
+    public GameObject healedSfx;
+    public GameObject invincibleSfx;
+    public GameObject spawnSfx;
     public float asteroidSpawnDelay = 0.8f;
     public int asteroidAmount = 4;
-    
+
+    private GameObject player;
+    private GameObject smoke;
+
     private List<GameObject> asteroids = new List<GameObject>();
     private List<GameObject> planets = new List<GameObject>();
     private List<GameObject> rings = new List<GameObject>();
@@ -36,19 +43,23 @@ public class GameManager : MonoBehaviour {
     private int asteroidPoints = 300;
     private int enemyPoints = 5000;
     private int scoreFontSize = 16;
+    private int enemyWave = 0;
 
-    private GameObject smoke;
     private List<GameObject> rockets = new List<GameObject>();
 
     // Use this for initialization
     void Start() {
         stopSpawning = false;
         scoreController = scoreText.GetComponent<ScoreController>();
-        ringSfx.GetComponent<AudioSource>().volume = mSettings.sfxVolume;
-
+        healedSfx.GetComponent<AudioSource>().volume = mSettings.sfxVolume;
+        invincibleSfx.GetComponent<AudioSource>().volume = mSettings.sfxVolume;
+        spawnSfx.GetComponent<AudioSource>().volume = mSettings.sfxVolume;
+        
+        
         StartCoroutine(LoadPlayer());
         StartCoroutine(LoadGameObjects());
-        //SpawnEnemy();
+        //SpawnEnemy(enemiesKilled);
+
     }
 	
 	// Update is called once per frame
@@ -65,6 +76,16 @@ public class GameManager : MonoBehaviour {
         {
             int rn = Random.Range(0, asteroidPrefabs.Count);
             GameObject newAsteroid = Instantiate(asteroidPrefabs[rn]);
+
+            // Fade in alpha color of material
+            Material mat = newAsteroid.GetComponent<MeshRenderer>().material;
+            Color c = mat.color;
+            newAsteroid.GetComponent<MeshRenderer>().material.color = new Color(c.r, c.g, c.b, 0);
+            LeanTween.value(newAsteroid, 0, 1, 1f).setOnUpdate( (float val) =>
+            {
+                mat.color = new Color(c.r, c.g, c.b, val);
+            });
+            
             newAsteroid.GetComponent<AsteroidController>().gameManager = this;
             asteroids.Add(newAsteroid);
             yield return new WaitForSeconds(asteroidSpawnDelay);
@@ -72,10 +93,21 @@ public class GameManager : MonoBehaviour {
     }
 
 
+
     void SpawnPlanet()
     {
         int rn = Random.Range(0, planetPrefabs.Count);
         GameObject newPlanet = Instantiate(planetPrefabs[rn]);
+
+        //Fade in alpha color
+        Material mat = newPlanet.GetComponent<MeshRenderer>().material;
+        Color c = mat.color;
+        newPlanet.GetComponent<MeshRenderer>().material.color = new Color(c.r, c.g, c.b, 0);
+        LeanTween.value(newPlanet, 0, 1, 2f).setOnUpdate((float val) =>
+        {
+            mat.color = new Color(c.r, c.g, c.b, val);
+        });
+
         newPlanet.GetComponent<PlanetController>().gameManager = this;
         planets.Add(newPlanet);
     }
@@ -83,15 +115,28 @@ public class GameManager : MonoBehaviour {
     void SpawnRing()
     {
         GameObject newRing = Instantiate(ringPrefab);
+
+        //Fade in alpha color
+        Material mat = newRing.GetComponent<MeshRenderer>().material;
+        Color c = mat.color;
+        newRing.GetComponent<MeshRenderer>().material.color = new Color(c.r, c.g, c.b, 0);
+        LeanTween.value(newRing, 0, 1, 1f).setOnUpdate((float val) =>
+        {
+            mat.color = new Color(c.r, c.g, c.b, val);
+        });
+
         newRing.GetComponent<RingController>().gameManager = this;
         rings.Add(newRing);
     }
     
-    public void SpawnEnemy()
+    public void SpawnEnemy(int amount)
     {
-        GameObject enemy = Instantiate(enemyPrefab);
-        enemy.GetComponent<EnemyController>().gameManager = this;
+        for (int i = 0; i < amount; i++)
+        {
+            GameObject enemy = Instantiate(enemyPrefab);
+            enemy.GetComponent<EnemyController>().gameManager = this;
 
+        }
     }
 
     public void PlayerHit()
@@ -159,7 +204,11 @@ public class GameManager : MonoBehaviour {
     private void GameOver()
     {
         scoreController.StopScore();
+        exitButton.SetActive(false);
+        gameOverPanel.SetActive(true);
+        LeanTween.size(gameOverPanel.GetComponent<RectTransform>(), Vector3.zero, 1.5f);
     }
+
     
     public void AsteroidRemoved(GameObject asteroid)
     {
@@ -173,10 +222,11 @@ public class GameManager : MonoBehaviour {
         if (!stopSpawning)
         {
             SpawnPlanet();
-            if (planets.Count % 3 == 0)
+            if (planets.Count % 2 == 0)
             {
-                SpawnEnemy();
-                StartCoroutine(SpawnAsteroids(2));
+                enemyWave++;
+                SpawnEnemy(enemyWave);
+                StartCoroutine(SpawnAsteroids(1));
             }
         }
     }
@@ -195,11 +245,13 @@ public class GameManager : MonoBehaviour {
     public void StopSpawning()
     {
         stopSpawning = true;
+        scoreController.StopScore();
     }
 
 
     private IEnumerator LoadPlayer()
     {
+        spawnSfx.GetComponent<AudioSource>().Play();
         GameObject respawn = Instantiate(respawnPrefab);
         respawn.transform.position = Vector3.zero;
 
@@ -227,6 +279,7 @@ public class GameManager : MonoBehaviour {
 
         animator.Play("ShipAnimation");
         pc.enabled = true;
+        spawnSfx.GetComponent<AudioSource>().Stop();
     }
 
     private IEnumerator LoadGameObjects()
@@ -257,7 +310,6 @@ public class GameManager : MonoBehaviour {
 
     public void FireRockets()
     {
-        ringSfx.GetComponent<AudioSource>().Play();
         for (int i = 0; i < asteroids.Count; i++)
         {
             GameObject rocket = Instantiate(rocketPrefab);
@@ -272,8 +324,19 @@ public class GameManager : MonoBehaviour {
             ParticleSystem parts = rocket.GetComponent<ParticleSystem>();
             Destroy(rocket, parts.main.duration);
 
-
         }
+    }
+
+    public void PlayHealedSfx()
+    {
+        healedSfx.GetComponent<AudioSource>().Play();
+    }
+
+    public IEnumerator PlayInvincibleSfx(WaitForSeconds wfs)
+    {
+        invincibleSfx.GetComponent<AudioSource>().Play();
+        yield return wfs;
+        invincibleSfx.GetComponent<AudioSource>().Stop();
     }
 
     
