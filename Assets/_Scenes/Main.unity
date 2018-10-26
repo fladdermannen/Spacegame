@@ -1728,7 +1728,7 @@ MonoBehaviour:
     type: 2}
   smokePrefab: {fileID: 1042235756280386, guid: a2fad0f0ad1126a43b2b8c78b5c6c82f,
     type: 2}
-  rocketPrefab: {fileID: 1612048188456594, guid: c9bbd5a7d805f834a81482b739dafb8e,
+  rocketPrefab: {fileID: 1686798092674790, guid: da90dadbf5205bd44b5aca69991c7d96,
     type: 2}
   canvas: {fileID: 428200779}
   cam: {fileID: 534669904}

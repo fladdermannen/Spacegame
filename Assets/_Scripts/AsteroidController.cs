@@ -8,7 +8,7 @@ public class AsteroidController : MonoBehaviour {
     public GameManager gameManager;
     
     Vector3 movement;
-    float speed = 50;
+    float speed = 1f;
     private int hitpoints = 3;
 
     private void Awake()
@@ -22,7 +22,7 @@ public class AsteroidController : MonoBehaviour {
     void Start () {
         
         movement.Set(0, 0, -1);
-        movement = movement.normalized * speed * Time.deltaTime;
+        movement = movement * speed;
 	}
 	
 	// Update is called once per frame

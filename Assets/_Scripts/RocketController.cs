@@ -17,17 +17,20 @@ public class RocketController : MonoBehaviour {
     private void Start()
     {
         mSystem = GetComponent<ParticleSystem>();
-
         Vector3 targetSpeed = new Vector3(0, 0, -1) * 50.001163315f;
+#if UNITY_EDITOR
+        targetSpeed = new Vector3(0, 0, -1) * 50.4f;
+#endif
+        float interceptorSpeed = 50;
 
         bool acquireTargetLockSuccess;
-        Vector3 direction = CalculateInterceptCourse(target.transform.position, targetSpeed, transform.position, 50, out acquireTargetLockSuccess);
+        Vector3 direction = CalculateInterceptCourse(target.transform.position, targetSpeed, transform.position, interceptorSpeed, out acquireTargetLockSuccess);
 
         if(acquireTargetLockSuccess)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.zero);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-            if (Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y) < 3 && target.transform.position.z < 90)
+            if (Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y) < 3 && target.transform.position.z < 80)
             {
                 mSystem.Play();
             }
